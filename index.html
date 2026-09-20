@@ -1,0 +1,1075 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="description" content="Raavish — singer, songwriter, composer and live performer. Bollywood, Sufi and Punjabi. 200+ live shows.">
+<title>RAAVISH</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Fraunces:ital,opsz,wght@1,9..144,300;1,9..144,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+  /* ============================================================
+     RAAVISH — one-page performer site
+     Single committed visual world: black stage, crimson light.
+     ------------------------------------------------------------
+     THINGS TO SWAP IN LATER (search for "SWAP"):
+       1. media/hero.jpg    — the performer photo (see .hero__photo)
+       2. video clips       — three reels in section "Videos", all served
+                              from media/ (see the comment in that section)
+       3. WhatsApp          — both wa.me links point at +91 78388 81460
+     ============================================================ */
+
+  :root{
+    color-scheme: dark;
+
+    --ink:        #050506;   /* stage black                         */
+    --ink-2:      #0C0C0F;   /* raised black, cards & bars          */
+    --ink-3:      #141317;   /* hairline / inset                    */
+    --crimson:    #E10600;   /* the single loud colour              */
+    --crimson-dk: #8E0B12;   /* borders, rules, dimmed accent       */
+    --ash:        #A8A2A4;   /* body copy, slightly red-biased grey */
+    --bone:       #F4EFEC;   /* headline white                      */
+
+    --shell: min(1180px, 100%);
+    --gutter: clamp(20px, 5vw, 64px);
+
+    --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+    --body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+    --script: "Fraunces", Georgia, "Times New Roman", serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body{
+    margin: 0;
+    background: var(--ink);
+    color: var(--ash);
+    font-family: var(--body);
+    font-size: clamp(15px, 1.05vw, 17px);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; }
+
+  ::selection { background: var(--crimson); color: #fff; }
+
+  :focus-visible{
+    outline: 2px solid var(--crimson);
+    outline-offset: 3px;
+  }
+
+  /* ---------- shared section shell ---------- */
+
+  .section{
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding-block: clamp(84px, 12vh, 140px);
+    padding-inline: var(--gutter);
+    border-top: 1px solid var(--ink-3);
+  }
+
+  .shell{
+    width: var(--shell);
+    margin-inline: auto;
+  }
+
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: .72rem;
+    font-weight: 500;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0 0 clamp(22px, 4vh, 40px);
+  }
+  .eyebrow::after{
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--crimson-dk), transparent);
+  }
+
+  h2.head{
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 800;
+    font-size: clamp(2.9rem, 8vw, 5.6rem);
+    line-height: .92;
+    letter-spacing: -.01em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    margin: 0 0 clamp(20px, 3vh, 34px);
+    text-wrap: balance;
+  }
+
+  /* ---------- pop-in reveal (JS-gated so the page is readable without it) ---------- */
+
+  .js .reveal{
+    opacity: 0;
+    transform: scale(.86) translateY(26px);
+    transition:
+      opacity .65s ease,
+      transform .95s cubic-bezier(.17, .84, .34, 1);
+    transition-delay: var(--d, 0ms);
+    will-change: transform, opacity;
+  }
+  .js .reveal.is-in{
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html { scroll-behavior: auto; }
+    .js .reveal{ opacity: 1; transform: none; transition: none; }
+    .marquee__track { animation: none !important; }
+  }
+
+  /* ---------- top bar ---------- */
+
+  .bar{
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: calc(12px + env(safe-area-inset-top, 0px)) var(--gutter) 12px;
+    background: color-mix(in srgb, var(--ink) 78%, transparent);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .3s ease, background .3s ease;
+  }
+  .bar.is-stuck{ border-bottom-color: var(--ink-3); }
+
+  .bar__mark{
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 900;
+    font-size: 1.35rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--bone);
+    text-decoration: none;
+  }
+  .bar__mark span{ color: var(--crimson); }
+
+  .bar__book{
+    font-family: var(--mono);
+    font-size: .7rem;
+    font-weight: 600;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--bone);
+    padding: 9px 16px;
+    border: 1px solid var(--crimson);
+    background: transparent;
+    transition: background .25s ease, color .25s ease;
+  }
+  .bar__book:hover{ background: var(--crimson); color: #fff; }
+
+  /* ---------- hero ---------- */
+
+  .hero{
+    min-height: 100vh;
+    min-height: 100svh;
+    display: grid;
+    align-content: center;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-top: 0;
+    padding-block: clamp(110px, 16vh, 170px) clamp(72px, 10vh, 110px);
+    padding-inline: var(--gutter);
+    text-align: center;
+  }
+
+  /* Hero photo — media/hero.jpg. On wide screens it holds the right side of
+     the frame and fades into black; on phones it becomes the full backdrop. */
+  .hero__bg{
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background-image:
+      radial-gradient(60% 55% at 50% 22%, #3B0A0C 0%, transparent 68%),
+      radial-gradient(90% 70% at 82% 96%, #1B0406 0%, transparent 70%),
+      linear-gradient(180deg, #120305 0%, #050506 62%);
+  }
+  .hero__photo{
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background-image: url("media/hero.jpg");
+    background-size: cover;
+    background-position: 52% 12%;
+    background-repeat: no-repeat;
+    filter: brightness(.82) contrast(1.06);
+  }
+  /* darkening veil so type always holds over the photo */
+  .hero__photo::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(5,5,6,.88) 0%, rgba(5,5,6,.6) 30%, rgba(5,5,6,.97) 100%),
+      radial-gradient(ellipse at 50% 38%, rgba(5,5,6,.3) 10%, rgba(5,5,6,.82) 100%);
+  }
+
+  /* faint scanline texture — a lit stage, not a flat colour */
+  .hero__grain{
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: .5;
+    background-image: repeating-linear-gradient(
+      180deg,
+      rgba(255,255,255,.028) 0 1px,
+      transparent 1px 3px
+    );
+  }
+
+  .tagline{
+    font-family: var(--script);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.05rem, 2.6vw, 1.75rem);
+    line-height: 1.35;
+    color: var(--bone);
+    margin: 0 auto clamp(26px, 5vh, 46px);
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+  .tagline em{
+    font-style: italic;
+    color: var(--crimson);
+    font-weight: 500;
+  }
+
+  .hero__name{
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 900;
+    font-size: clamp(4.4rem, 22vw, 15rem);
+    line-height: .8;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    margin: 0;
+    text-shadow: 0 0 60px rgba(225, 6, 0, .28);
+  }
+
+  .hero__role{
+    font-family: var(--mono);
+    font-size: clamp(.68rem, 1.6vw, .84rem);
+    font-weight: 500;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    color: var(--bone);
+    margin: clamp(20px, 3.4vh, 32px) auto 0;
+    max-width: 30ch;
+    line-height: 2;
+  }
+  .hero__role b{
+    color: var(--ash);
+    font-weight: 500;
+    display: block;
+    letter-spacing: .18em;
+    margin-top: 6px;
+  }
+
+  .hero__scroll{
+    margin-top: clamp(34px, 6vh, 58px);
+    font-family: var(--mono);
+    font-size: .64rem;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: var(--crimson-dk);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .hero__scroll i{
+    display: block;
+    width: 1px;
+    height: 38px;
+    background: linear-gradient(180deg, var(--crimson), transparent);
+    animation: drop 2.4s ease-in-out infinite;
+  }
+  @keyframes drop{
+    0%, 100% { transform: scaleY(.4); transform-origin: top; opacity: .5; }
+    50%      { transform: scaleY(1);  transform-origin: top; opacity: 1; }
+  }
+
+  /* ---------- bio ---------- */
+
+  .bio__grid{
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+    gap: clamp(32px, 6vw, 80px);
+    align-items: start;
+  }
+
+  .bio p{
+    margin: 0 0 1.25em;
+    max-width: 62ch;
+    font-size: clamp(1rem, 1.35vw, 1.18rem);
+  }
+  .bio p:last-of-type{ margin-bottom: 0; }
+  .bio p strong{
+    color: var(--bone);
+    font-weight: 600;
+  }
+
+  .bio__lead{
+    font-family: var(--script);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.25rem, 2.6vw, 1.85rem) !important;
+    line-height: 1.45;
+    color: var(--bone);
+  }
+
+  .aside{
+    display: grid;
+    gap: 22px;
+    border-left: 1px solid var(--ink-3);
+    padding-left: clamp(20px, 3vw, 34px);
+  }
+
+  .count__num{
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 900;
+    font-size: clamp(3.6rem, 9vw, 6rem);
+    line-height: .82;
+    color: var(--crimson);
+    display: block;
+    font-variant-numeric: tabular-nums;
+  }
+  .count__label{
+    font-family: var(--mono);
+    font-size: .68rem;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    color: var(--ash);
+    display: block;
+    margin-top: 12px;
+  }
+
+  .genre__label{
+    font-family: var(--mono);
+    font-size: .68rem;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    margin: 0 0 12px;
+  }
+  .chips{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .chips li{
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--bone);
+    border: 1px solid var(--crimson-dk);
+    padding: 5px 14px 3px;
+  }
+
+  /* ---------- videos ---------- */
+
+  .video__grid{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(16px, 2.4vw, 26px);
+    align-items: start;
+  }
+
+  /* featured vertical reel — shot on a phone, so the frame keeps it upright
+     and letterboxes into black rather than cropping the band out */
+  .reel{
+    display: grid;
+    grid-template-rows: 1fr auto;
+    gap: 12px;
+  }
+  .reel__frame{
+    position: relative;
+    aspect-ratio: 9 / 16;
+    max-width: 100%;
+    background: #000;
+    border: 1px solid var(--crimson-dk);
+    overflow: hidden;
+  }
+  .reel__frame video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #000;
+    display: block;
+  }
+  .reel__cap{
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .reel__cap b{
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--bone);
+  }
+  .reel__cap span{
+    font-family: var(--mono);
+    font-size: .62rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    white-space: nowrap;
+  }
+
+  .video__stack{
+    display: grid;
+    gap: clamp(16px, 2.4vw, 26px);
+  }
+  /* the open embed slot keeps the same upright frame as the reels, so the row
+     reads as one set — a pasted-in reel fills it exactly */
+  .video__stack .slot{ aspect-ratio: 9 / 16; }
+
+  /* SWAP 2 — replace the contents of each .slot with your embed, e.g.
+     <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="…"
+             allowfullscreen loading="lazy"></iframe>
+     The .slot box already holds a 16:9 frame, so the iframe just fills it. */
+  .slot{
+    position: relative;
+    aspect-ratio: 16 / 9;
+    max-width: 100%;
+    background: var(--ink-2);
+    border: 1px solid var(--ink-3);
+    display: grid;
+    place-content: center;
+    gap: 14px;
+    text-align: center;
+    padding: 18px;
+    transition: border-color .3s ease, transform .4s cubic-bezier(.17,.84,.34,1);
+  }
+  .slot:hover{ border-color: var(--crimson); transform: translateY(-4px); }
+  .slot--embed{ padding: 0; background: #000; border-color: var(--crimson-dk); }
+  .slot--link{
+    text-decoration: none;
+    border-color: var(--crimson-dk);
+  }
+  .slot--link .slot__note{ color: var(--crimson); }
+  .slot iframe, .slot video{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .slot__play{
+    width: 54px;
+    height: 54px;
+    margin: 0 auto;
+    border: 1px solid var(--crimson);
+    border-radius: 50%;
+    display: grid;
+    place-content: center;
+  }
+  .slot__play::after{
+    content: "";
+    width: 0; height: 0;
+    border-left: 13px solid var(--crimson);
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    margin-left: 4px;
+  }
+  .slot__title{
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--bone);
+    margin: 0;
+  }
+  .slot__note{
+    font-family: var(--mono);
+    font-size: .62rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: #6E6668;
+    margin: 0;
+  }
+
+  /* ---------- packages ---------- */
+
+  .pack__note-head{
+    font-family: var(--mono);
+    font-size: .74rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ash);
+    margin: -14px 0 clamp(30px, 4vh, 44px);
+    max-width: 52ch;
+    line-height: 1.9;
+  }
+
+  .pack__grid{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(14px, 1.8vw, 20px);
+  }
+
+  .pack{
+    border: 1px solid var(--crimson-dk);
+    background: linear-gradient(180deg, var(--ink-2), #09090B);
+    padding: clamp(22px, 3vw, 32px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    transition: border-color .3s ease, background .3s ease;
+  }
+  .pack::before{
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--crimson);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform .45s cubic-bezier(.17,.84,.34,1);
+  }
+  .pack:hover{ border-color: var(--crimson); }
+  .pack:hover::before{ transform: scaleY(1); }
+
+  .pack__name{
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 800;
+    font-size: clamp(1.9rem, 3.4vw, 2.5rem);
+    line-height: 1;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    color: var(--bone);
+    margin: 0;
+  }
+  .pack__line{
+    font-size: .95rem;
+    color: var(--ash);
+    margin: 0;
+    flex: 1;
+  }
+  .pack__price{
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+    color: var(--crimson);
+    font-variant-numeric: tabular-nums;
+    margin: 6px 0 0;
+    letter-spacing: -.01em;
+  }
+
+  .pack__terms{
+    margin-top: clamp(16px, 2.4vw, 22px);
+    border: 1px dashed var(--crimson-dk);
+    background: rgba(142, 11, 18, .07);
+    padding: clamp(18px, 2.6vw, 26px);
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .pack__terms span{
+    font-family: var(--mono);
+    font-size: .66rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    white-space: nowrap;
+    padding-top: 3px;
+  }
+  .pack__terms p{
+    margin: 0;
+    color: var(--bone);
+    font-size: clamp(.95rem, 1.3vw, 1.05rem);
+  }
+
+  /* ---------- booking ---------- */
+
+  .book{ text-align: center; }
+  .book .shell{ display: grid; justify-items: center; }
+  .book .eyebrow{ justify-content: center; }
+  .book .eyebrow::after{ display: none; }
+
+  .book__head{
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 900;
+    font-size: clamp(3.2rem, 13vw, 8.5rem);
+    line-height: .84;
+    letter-spacing: .01em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    margin: 0 0 clamp(18px, 3vh, 28px);
+    text-wrap: balance;
+  }
+  .book__sub{
+    max-width: 44ch;
+    margin: 0 0 clamp(32px, 5vh, 48px);
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+  }
+
+  /* WhatsApp CTA — the two wa.me links carry the pre-filled booking message */
+  .wa{
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    background: var(--crimson);
+    color: #fff;
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 800;
+    font-size: clamp(1.35rem, 3.4vw, 1.9rem);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 16px clamp(26px, 5vw, 44px) 13px;
+    border: 1px solid var(--crimson);
+    transition: transform .3s cubic-bezier(.17,.84,.34,1), box-shadow .3s ease, background .3s ease;
+    box-shadow: 0 0 0 rgba(225,6,0,0);
+  }
+  .wa:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 14px 44px rgba(225, 6, 0, .34);
+    background: #F71407;
+  }
+  .wa svg{ width: 1.1em; height: 1.1em; flex: none; }
+
+  .book__fine{
+    font-family: var(--mono);
+    font-size: .66rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: #6E6668;
+    margin: clamp(22px, 3.4vh, 32px) 0 0;
+  }
+
+  /* ---------- marquee + footer ---------- */
+
+  .marquee{
+    overflow: hidden;
+    border-block: 1px solid var(--ink-3);
+    padding-block: 14px;
+    display: flex;
+  }
+  .marquee__track{
+    display: flex;
+    flex: none;
+    gap: 34px;
+    padding-right: 34px;
+    animation: slide 26s linear infinite;
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--crimson-dk);
+    white-space: nowrap;
+  }
+  @keyframes slide{
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  footer{
+    padding: 34px var(--gutter) calc(34px + env(safe-area-inset-bottom, 0px));
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: .64rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: #5E5759;
+  }
+  footer a{ text-decoration: none; }
+  footer a:hover{ color: var(--crimson); }
+
+  /* ---------- narrow screens ---------- */
+
+  @media (max-width: 1000px) and (min-width: 721px){
+    .video__grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 860px){
+    .bio__grid{ grid-template-columns: minmax(0, 1fr); gap: 38px; }
+    .aside{
+      border-left: 0;
+      border-top: 1px solid var(--ink-3);
+      padding-left: 0;
+      padding-top: 26px;
+    }
+  }
+
+  @media (max-width: 720px){
+    .video__grid{ grid-template-columns: minmax(0, 1fr); }
+    .reel,
+    .video__stack{ max-width: 320px; margin-inline: auto; width: 100%; }
+    .pack__grid{ grid-template-columns: minmax(0, 1fr); }
+    .section{ min-height: auto; padding-block: clamp(72px, 11vh, 96px); }
+    .hero{ min-height: 100svh; }
+    .pack__terms{ flex-direction: column; gap: 10px; }
+    .pack__terms span{ white-space: normal; }
+  }
+
+  /* wide screens: photo holds the right of the frame, type runs down the left */
+  @media (min-width: 861px){
+    .hero{ text-align: left; }
+    .hero > .tagline,
+    .hero > .hero__name,
+    .hero > .hero__role{ margin-left: 0; margin-right: 0; }
+    .hero > .tagline,
+    .hero > .hero__role,
+    .hero > .hero__name{ max-width: min(58%, 760px); }
+    .hero__name{ font-size: clamp(4.5rem, 10vw, 11rem); }
+    .hero__role{ line-height: 1.9; }
+    .hero__scroll{ align-items: flex-start; }
+
+    .hero__photo{
+      left: auto;
+      right: 0;
+      width: min(52%, 780px);
+      background-position: 50% 8%;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 44%);
+              mask-image: linear-gradient(90deg, transparent 0%, #000 44%);
+    }
+    .hero__photo::after{
+      background:
+        linear-gradient(90deg, rgba(5,5,6,.92) 0%, rgba(5,5,6,.22) 46%, rgba(5,5,6,.34) 100%),
+        linear-gradient(180deg, rgba(5,5,6,.55) 0%, transparent 26%, rgba(5,5,6,.88) 100%);
+    }
+  }
+
+  /* small phones: keep the big display type inside the gutter even if the
+     web font is slow or blocked and a wider fallback face stands in */
+  @media (max-width: 480px){
+    .hero__name{ font-size: clamp(3.4rem, 19vw, 6rem); }
+    h2.head{ font-size: clamp(2.2rem, 10vw, 3.4rem); }
+    .book__head{ font-size: clamp(2.6rem, 14vw, 4.4rem); }
+    .pack__name{ font-size: clamp(1.7rem, 8vw, 2.2rem); }
+    .wa{ font-size: clamp(1.1rem, 5.4vw, 1.5rem); padding: 15px 22px 12px; }
+  }
+
+  h2.head, .hero__name, .book__head, .pack__name, .slot__title{
+    overflow-wrap: break-word;
+  }
+</style>
+
+<!-- Adds the .js hook so the pop-in reveals only hide content when JS can bring it back. -->
+<script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+
+<header class="bar" id="bar">
+  <a class="bar__mark" href="#top">Raa<span>vish</span></a>
+  <a class="bar__book"
+     href="https://wa.me/917838881460?text=Hello%20Raavish.%20I%27m%20looking%20to%20book%20you%20for%20a%20live%20performance.%20Please%20share%20your%20charges%2C%20availability%2C%20and%20performance%20details."
+     target="_blank" rel="noopener">Book</a>
+</header>
+
+<main id="top">
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="hero">
+    <div class="hero__bg" aria-hidden="true"></div>
+    <div class="hero__photo" aria-hidden="true"></div>
+    <div class="hero__grain" aria-hidden="true"></div>
+
+    <p class="tagline reveal" style="--d:60ms">
+      We just don't perform, <em>we create experiences.</em>
+    </p>
+
+    <h1 class="hero__name reveal" style="--d:180ms">Raavish</h1>
+
+    <p class="hero__role reveal" style="--d:320ms">
+      Singer &middot; Songwriter &middot; Composer
+      <b>and an energetic performer</b>
+    </p>
+
+    <a class="hero__scroll reveal" href="#bio" style="--d:460ms">
+      <i aria-hidden="true"></i>
+      Scroll
+    </a>
+  </section>
+
+  <!-- ===================== BIO ===================== -->
+  <section class="section bio" id="bio">
+    <div class="shell">
+      <p class="eyebrow reveal">The Artist</p>
+      <h2 class="head reveal" style="--d:80ms">More than sound</h2>
+
+      <div class="bio__grid">
+        <div class="reveal" style="--d:160ms">
+          <p class="bio__lead">
+            Music, for me, is more than just sound — it's emotion, storytelling, and connection.
+          </p>
+          <p>
+            As an artist, I blend Bollywood, Punjabi, and soulful genres to create performances
+            that leave a lasting impression.
+          </p>
+          <p>
+            From live gigs to private and corporate events, my focus is always on delivering an
+            <strong>unforgettable musical experience</strong> that truly connects with the audience.
+          </p>
+          <p>
+            I have performed across various platforms and have done
+            <strong>200+ live shows</strong>.
+          </p>
+        </div>
+
+        <div class="aside reveal" style="--d:280ms">
+          <div>
+            <span class="count__num">200+</span>
+            <span class="count__label">Live shows performed</span>
+          </div>
+          <div>
+            <p class="genre__label">Genre</p>
+            <ul class="chips">
+              <li>Bollywood</li>
+              <li>Sufi</li>
+              <li>Punjabi</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== VIDEOS ===================== -->
+  <section class="section" id="videos">
+    <div class="shell">
+      <p class="eyebrow reveal">Watch</p>
+      <h2 class="head reveal" style="--d:80ms">Live &amp; unfiltered</h2>
+
+      <div class="video__grid">
+
+        <!-- Live acoustic set — media/raavish-reel.mp4 -->
+        <div class="reel reveal" style="--d:140ms">
+          <div class="reel__frame">
+            <video
+              src="media/raavish-reel.mp4"
+              poster="media/reel-poster.jpg"
+              controls
+              playsinline
+              preload="metadata"
+              title="Raavish — live acoustic set"></video>
+          </div>
+          <p class="reel__cap">
+            <b>Live acoustic set</b>
+            <span>0:37</span>
+          </p>
+        </div>
+
+        <!-- Sufi vibe — media/raavish-sufi.mp4 -->
+        <div class="reel reveal" style="--d:240ms">
+          <div class="reel__frame">
+            <video
+              src="media/raavish-sufi.mp4"
+              poster="media/sufi-poster.jpg"
+              controls
+              playsinline
+              preload="metadata"
+              title="Raavish — Sufi set, live"></video>
+          </div>
+          <p class="reel__cap">
+            <b>Sufi vibe</b>
+            <span>1:31</span>
+          </p>
+        </div>
+
+        <!-- Bollywood — media/raavish-bollywood.mp4 -->
+        <div class="reel reveal" style="--d:340ms">
+          <div class="reel__frame">
+            <video
+              src="media/raavish-bollywood.mp4"
+              poster="media/bollywood-poster.jpg"
+              controls
+              playsinline
+              preload="metadata"
+              title="Raavish — Bollywood, live on stage"></video>
+          </div>
+          <p class="reel__cap">
+            <b>Bollywood</b>
+            <span>0:54</span>
+          </p>
+        </div>
+
+        <!-- To add a fourth clip, copy one of the blocks above and point it at a new
+             file in media/ — or paste an embed in a <div class="slot"> instead. -->
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PACKAGES ===================== -->
+  <section class="section" id="packages">
+    <div class="shell">
+      <p class="eyebrow reveal">Packages</p>
+      <h2 class="head reveal" style="--d:80ms">Pick your line-up</h2>
+      <p class="pack__note-head reveal" style="--d:140ms">
+        For 2 hours performance and gathering of up to 20–25 people
+      </p>
+
+      <div class="pack__grid">
+
+        <article class="pack reveal" style="--d:180ms">
+          <h3 class="pack__name">Solo</h3>
+          <p class="pack__line">Singer + guitar</p>
+          <p class="pack__price">₹10,000/-</p>
+        </article>
+
+        <article class="pack reveal" style="--d:260ms">
+          <h3 class="pack__name">Duo</h3>
+          <p class="pack__line">Cajon + singer + guitar</p>
+          <p class="pack__price">₹15,000/-</p>
+        </article>
+
+        <article class="pack reveal" style="--d:340ms">
+          <h3 class="pack__name">Trio</h3>
+          <p class="pack__line">Keyboardist + cajon + singer + guitar</p>
+          <p class="pack__price">₹20,000/-</p>
+        </article>
+
+        <article class="pack reveal" style="--d:420ms">
+          <h3 class="pack__name">5-Piece Band</h3>
+          <p class="pack__line">Full band with drum kit</p>
+          <p class="pack__price">₹50,000/-</p>
+        </article>
+
+      </div>
+
+      <div class="pack__terms reveal" style="--d:500ms">
+        <span>Please note</span>
+        <p>
+          Prices are for Mumbai location only. For outside Mumbai, travelling and sound
+          charges are separate.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== BOOKING ===================== -->
+  <section class="section book" id="book">
+    <div class="shell">
+      <p class="eyebrow reveal">Booking</p>
+      <h2 class="book__head reveal" style="--d:80ms">Let's make it loud</h2>
+      <p class="book__sub reveal" style="--d:160ms">
+        Weddings, private parties, corporate evenings, club nights. Tell me the date and
+        the room — I'll bring the set.
+      </p>
+
+      <!-- SWAP 3 — replace 91XXXXXXXXXX with the WhatsApp number in international format -->
+      <a class="wa reveal" style="--d:240ms"
+         href="https://wa.me/917838881460?text=Hello%20Raavish.%20I%27m%20looking%20to%20book%20you%20for%20a%20live%20performance.%20Please%20share%20your%20charges%2C%20availability%2C%20and%20performance%20details."
+         target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.28-1.38a9.87 9.87 0 0 0 4.76 1.21h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm0 18.02h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.13.82.84-3.05-.2-.31a8.17 8.17 0 0 1-1.25-4.35c0-4.53 3.7-8.22 8.24-8.22a8.19 8.19 0 0 1 8.22 8.23c0 4.53-3.7 8.21-8.23 8.21Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07s.89 2.4 1.01 2.560c.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.48-.28Z"/>
+        </svg>
+        Book on WhatsApp
+      </a>
+
+      <p class="book__fine reveal" style="--d:320ms">
+        Pre-filled message · usually replies same day
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span>Bollywood</span><span>·</span><span>Sufi</span><span>·</span><span>Punjabi</span><span>·</span>
+    <span>200+ Live Shows</span><span>·</span><span>Raavish</span><span>·</span>
+    <span>Bollywood</span><span>·</span><span>Sufi</span><span>·</span><span>Punjabi</span><span>·</span>
+    <span>200+ Live Shows</span><span>·</span><span>Raavish</span><span>·</span>
+  </div>
+</div>
+
+<footer>
+  <span>© <span id="yr">2026</span> Raavish — Live music</span>
+  <a href="#top">Back to top ↑</a>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  document.getElementById("yr").textContent = new Date().getFullYear();
+
+  /* ---- pop-in on scroll ---------------------------------------------- */
+  var items = document.querySelectorAll(".reveal");
+
+  if (!("IntersectionObserver" in window)) {
+    items.forEach(function (el) { el.classList.add("is-in"); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-in");
+          io.unobserve(entry.target);   // animate once, then leave it be
+        }
+      });
+    }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
+
+    items.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ---- top bar hairline once you leave the hero ----------------------- */
+  var bar = document.getElementById("bar");
+  var hero = document.getElementById("hero");
+
+  if ("IntersectionObserver" in window && hero) {
+    new IntersectionObserver(function (entries) {
+      bar.classList.toggle("is-stuck", !entries[0].isIntersecting);
+    }, { rootMargin: "-70px 0px 0px 0px" }).observe(hero);
+  }
+})();
+</script>
+
+</body>
+</html>
