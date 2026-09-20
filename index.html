@@ -17,9 +17,9 @@
      Single committed visual world: black stage, crimson light.
      ------------------------------------------------------------
      THINGS TO SWAP IN LATER (search for "SWAP"):
-       1. media/hero.jpg    — the performer photo (see .hero__photo)
+       1. hero.jpg    — the performer photo (see .hero__photo)
        2. video clips       — three reels in section "Videos", all served
-                              from media/ (see the comment in that section)
+                              from  (see the comment in that section)
        3. WhatsApp          — both wa.me links point at +91 78388 81460
      ============================================================ */
 
@@ -200,7 +200,7 @@
     text-align: center;
   }
 
-  /* Hero photo — media/hero.jpg. On wide screens it holds the right side of
+  /* Hero photo — hero.jpg. On wide screens it holds the right side of
      the frame and fades into black; on phones it becomes the full backdrop. */
   .hero__bg{
     position: absolute;
@@ -215,7 +215,7 @@
     position: absolute;
     inset: 0;
     z-index: -2;
-    background-image: url("media/hero.jpg");
+    background-image: url("hero.jpg");
     background-size: cover;
     background-position: 52% 12%;
     background-repeat: no-repeat;
@@ -888,12 +888,12 @@
 
       <div class="video__grid">
 
-        <!-- Live acoustic set — media/raavish-reel.mp4 -->
+        <!-- Live acoustic set — raavish-reel.mp4 -->
         <div class="reel reveal" style="--d:140ms">
           <div class="reel__frame">
             <video
-              src="media/raavish-reel.mp4"
-              poster="media/reel-poster.jpg"
+              src="raavish-reel.mp4"
+              poster="reel-poster.jpg"
               controls
               playsinline
               preload="metadata"
@@ -905,12 +905,12 @@
           </p>
         </div>
 
-        <!-- Sufi vibe — media/raavish-sufi.mp4 -->
+        <!-- Sufi vibe — raavish-sufi.mp4 -->
         <div class="reel reveal" style="--d:240ms">
           <div class="reel__frame">
             <video
-              src="media/raavish-sufi.mp4"
-              poster="media/sufi-poster.jpg"
+              src="raavish-sufi.mp4"
+              poster="sufi-poster.jpg"
               controls
               playsinline
               preload="metadata"
@@ -922,12 +922,12 @@
           </p>
         </div>
 
-        <!-- Bollywood — media/raavish-bollywood.mp4 -->
+        <!-- Bollywood — raavish-bollywood.mp4 -->
         <div class="reel reveal" style="--d:340ms">
           <div class="reel__frame">
             <video
-              src="media/raavish-bollywood.mp4"
-              poster="media/bollywood-poster.jpg"
+              src="raavish-bollywood.mp4"
+              poster="bollywood-poster.jpg"
               controls
               playsinline
               preload="metadata"
@@ -940,7 +940,7 @@
         </div>
 
         <!-- To add a fourth clip, copy one of the blocks above and point it at a new
-             file in media/ — or paste an embed in a <div class="slot"> instead. -->
+             file in  — or paste an embed in a <div class="slot"> instead. -->
 
       </div>
     </div>
